@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Local secrets and credentials ###
+.env
+.env.*
+!.env.example
+*.local.properties
+application-*.local.properties
+secrets/
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*credentials*.json
