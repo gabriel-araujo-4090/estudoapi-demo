@@ -31,15 +31,16 @@ public class TaskController {
 
     @PostMapping("/create")
     @ResponseStatus(HttpStatus.CREATED)
-    public Task criar(@RequestBody TaskRequest request) {
+    public Task criar(
+        @RequestBody TaskRequest request,
+        @RequestHeader ("X-user-id") Long userId){
         request.validarCamposPermitidos();
 
         Task task = new Task();
         task.setTitle(request.getTitle());
         task.setDescription(request.getDescription());
         task.setCompleted(false);
-
-        return taskService.criar(task);
+        return taskService.criar(task, userId);
     }
 
     @PostMapping("/update")

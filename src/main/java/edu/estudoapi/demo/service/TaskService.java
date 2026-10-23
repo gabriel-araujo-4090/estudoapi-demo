@@ -8,19 +8,25 @@ import org.springframework.web.server.ResponseStatusException;
 
 import edu.estudoapi.demo.entity.Task;
 import edu.estudoapi.demo.repository.TaskRepository;
+import edu.estudoapi.demo.repository.UserRepository;
 import edu.estudoapi.demo.service.validate.ValidateInput;
 
 @Service 
 public class TaskService {
 
     private final TaskRepository taskRepository;
+    private final UserRepository userRepository;
 
-    public TaskService(TaskRepository taskRepository) {
+    public TaskService(TaskRepository taskRepository, UserRepository userRepository) {
         this.taskRepository = taskRepository;
+        this.userRepository = userRepository;
     }
 
-    public Task criar(Task task) {
+    public Task criar(Task task, Long userId) {
         ValidateInput.validateTitle(task.getTitle());
+        task.setUser(userRepository.findById(userId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, "Usuário não encontrado")));
         return taskRepository.save(task);
     }
 
